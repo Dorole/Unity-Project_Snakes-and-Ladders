@@ -40,6 +40,9 @@ public class GameManager : MonoBehaviour
                     state = States.Waiting;
                     break;
                 case States.SwitchPlayer:
+                    _activePlayer++;
+                    _activePlayer %= playerList.Count;
+                    state = States.RollDice;
                     break;
             }
         }
@@ -50,7 +53,7 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(_waitBeforeRolling);
 
         _diceNumber = Random.Range(1, 7);
-        Debug.Log("Rolled: " + _diceNumber);
+        Debug.Log(playerList[_activePlayer].piece.gameObject.name + " rolled " + _diceNumber);
 
         //player moves
         playerList[_activePlayer].piece.Play(_diceNumber);
