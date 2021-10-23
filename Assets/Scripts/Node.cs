@@ -5,28 +5,27 @@ using UnityEngine.UI;
 
 public class Node : MonoBehaviour
 {
-    [SerializeField]
-    private int _nodeID; //node order number in the route
+    public int nodeID; //node order number in the route
+    public Node connectedNode; //the node where ladder/snake is leading to
+    
     [SerializeField]
     private Text _numberText;
-    [SerializeField]
-    private Node _connectedNode; //the node where ladder/snake is leading to
 
     public void SetNodeID(int nodeId)
     {
-        _nodeID = nodeId;
+        nodeID = nodeId;
 
         if (_numberText != null)
-            _numberText.text = _nodeID.ToString();
+            _numberText.text = nodeID.ToString();
     }
 
     private void OnDrawGizmos()
     {
-        if (_connectedNode != null)
+        if (connectedNode != null)
         {
-            Color color = (_connectedNode._nodeID > _nodeID) ? Color.green : Color.red;
+            Color color = (connectedNode.nodeID > nodeID) ? Color.green : Color.red;
 
-            Debug.DrawLine(transform.position, _connectedNode.transform.position, color);
+            Debug.DrawLine(transform.position, connectedNode.transform.position, color);
         }
     }
 }

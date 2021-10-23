@@ -70,6 +70,25 @@ public class Player : MonoBehaviour
             _doneSteps++;
         }
 
+        //snake-ladder movement
+        if(_nodeList[_playerPosition].connectedNode != null)
+        {
+            yield return new WaitForSeconds(_waitBetweenNodes);
+
+            int conNodeId = _nodeList[_playerPosition].connectedNode.nodeID;
+            Vector3 nextPosition = _nodeList[_playerPosition].connectedNode.transform.position;
+            nextPosition.z = -0.05f;
+
+            while (MoveToNextNode(nextPosition))
+            {
+                yield return null;
+            }
+
+            _doneSteps = conNodeId;
+            _playerPosition = conNodeId;
+
+        }
+
         _isMoving = false;
     }
 
