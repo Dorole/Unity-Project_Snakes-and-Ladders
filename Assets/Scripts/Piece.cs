@@ -108,6 +108,16 @@ public class Piece : MonoBehaviour
         if (_doneSteps + _stepsToMove < _route.nodeList.Count)
             StartCoroutine(Move());
         else
-            Debug.Log("The rolled number is too high!");
+            StartCoroutine(TimerBeforeSwitch());
+    }
+
+    private IEnumerator TimerBeforeSwitch()
+    {
+        Interface.instance.ShowText("Too high!");
+        Debug.Log("The rolled number is too high!");
+
+        yield return new WaitForSeconds(1.5f);
+
+        GameManager.instance.state = GameManager.States.SwitchPlayer;
     }
 }
