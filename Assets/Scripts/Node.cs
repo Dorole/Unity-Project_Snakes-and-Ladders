@@ -28,4 +28,6 @@ public class Node : MonoBehaviour
             Debug.DrawLine(transform.position, connectedNode.transform.position, color);
         }
     }
+
+    //potentially rearrange pieces here if there are 2 or more pieces on the same node
 }

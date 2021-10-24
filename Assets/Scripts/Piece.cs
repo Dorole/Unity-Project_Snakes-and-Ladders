@@ -13,7 +13,7 @@ public class Piece : MonoBehaviour
     }
 
     public PieceColor pieceColor;
-    public Color buttonColor;
+    public Color UIColor;
     
     [SerializeField]
     private Route _route;
@@ -55,7 +55,7 @@ public class Piece : MonoBehaviour
             Vector3 nextPosition = _route.nodeList[_playerPosition].transform.position;
             nextPosition.z = -0.05f; //offset - otherwise the player is hidden behind the node 
 
-            while(MoveToNextNode(nextPosition))
+            while (MoveToNextNode(nextPosition))
             {
                 yield return null;
             }
@@ -67,7 +67,7 @@ public class Piece : MonoBehaviour
         }
 
         //snake-ladder movement
-        if(_nodeList[_playerPosition].connectedNode != null)
+        if (_nodeList[_playerPosition].connectedNode != null)
         {
             yield return new WaitForSeconds(_waitBetweenNodes);
 
@@ -85,7 +85,12 @@ public class Piece : MonoBehaviour
 
         }
 
-        //check for a win
+        //checks for a win
+        if (_doneSteps == _nodeList.Count - 1)
+        {
+            GameManager.instance.GameOver();
+            yield break;
+        }
 
         GameManager.instance.state = GameManager.States.SwitchPlayer;
         _isMoving = false;
