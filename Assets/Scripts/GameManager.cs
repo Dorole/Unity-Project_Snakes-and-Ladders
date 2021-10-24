@@ -8,12 +8,14 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
 
     public List<Player> playerList = new List<Player>();
+    [Space]
     public GameObject rollDiceButton;
+    public Dice dice;
 
     private int _activePlayer;
     private int _diceNumber;
     [SerializeField]
-    private float _waitBeforeRolling = 2.0f;
+    private float _waitBeforeRolling = 1.0f;
 
     public enum States
     {
@@ -22,6 +24,7 @@ public class GameManager : MonoBehaviour
         SwitchPlayer
     }
 
+    [Space]
     public States state;
 
     private void Awake()
@@ -42,7 +45,7 @@ public class GameManager : MonoBehaviour
                 break;
             case States.RollDice:
                 if (playerList[_activePlayer].playerType == Player.PlayerType.CPU)
-                    StartCoroutine(RollDiceWithDelay());
+                    StartCoroutine(CPUTurn());
                 else
                 {
                     ActivateButton(true);
@@ -58,17 +61,21 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    //this coroutine rolls the dice 
-    private IEnumerator RollDiceWithDelay()
+    //this coroutine executes CPU player's turn
+    private IEnumerator CPUTurn()
     {
         yield return new WaitForSeconds(_waitBeforeRolling);
 
-        _diceNumber = Random.Range(1, 7);
-        Debug.Log(playerList[_activePlayer].piece.gameObject.name + " rolled " + _diceNumber);
-
-        //player moves
-        playerList[_activePlayer].piece.Play(_diceNumber);
+        dice.StartCoroutine("RollDice");
     }
+
+    //called from Dice class
+    public void MovePlayer(int diceNumber) 
+    {
+        Debug.Log(playerList[_activePlayer].piece.gameObject.name + " rolled " + diceNumber);
+        playerList[_activePlayer].piece.Play(diceNumber);
+    }
+
 
     private void ActivateButton(bool active)
     {
@@ -79,7 +86,7 @@ public class GameManager : MonoBehaviour
     public void HumanTurn()
     {
         ActivateButton(false);
-        StartCoroutine(RollDiceWithDelay());
+        dice.StartCoroutine("RollDice");
     }
 
 }
