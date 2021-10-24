@@ -4,6 +4,17 @@ using UnityEngine;
 
 public class Piece : MonoBehaviour
 {
+    public enum PieceColor
+    {
+        Green,
+        Red,
+        Blue,
+        Yellow
+    }
+
+    public PieceColor pieceColor;
+    public Color buttonColor;
+    
     [SerializeField]
     private Route _route;
 
@@ -30,21 +41,6 @@ public class Piece : MonoBehaviour
                 _nodeList.Add(n);
         }
     }
-
-    /*void Update()
-    {
-        //debug, delete later
-        if (Input.GetKeyDown(KeyCode.Space) && !_isMoving)
-        {
-            _stepsToMove = Random.Range(1, 7); //dice simulation
-            Debug.Log("Rolled: " + _stepsToMove);
-
-            if (_doneSteps + _stepsToMove < _route.nodeList.Count)
-                StartCoroutine(Move());
-            else
-                Debug.Log("The rolled number is too high!");
-        }
-    }*/
 
     private IEnumerator Move()
     {
@@ -91,6 +87,7 @@ public class Piece : MonoBehaviour
 
         //check for a win
 
+        GameManager.instance.state = GameManager.States.SwitchPlayer;
         _isMoving = false;
     }
 
@@ -107,7 +104,5 @@ public class Piece : MonoBehaviour
             StartCoroutine(Move());
         else
             Debug.Log("The rolled number is too high!");
-        
-        GameManager.instance.state = GameManager.States.SwitchPlayer;
     }
 }

@@ -11,5 +11,4 @@ public class Player
     }
 
     public PlayerType playerType;
-
 }
