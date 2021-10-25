@@ -6,17 +6,6 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
-
-    public List<Player> playerList = new List<Player>();
-    [Space]
-    public GameObject rollDiceButton;
-    public Dice dice;
-
-    private int _activePlayer;
-    private int _diceNumber;
-    [SerializeField]
-    private float _waitBeforeRolling = 1.0f;
-
     public enum States
     {
         Waiting,
@@ -26,6 +15,18 @@ public class GameManager : MonoBehaviour
 
     [Space]
     public States state;
+    [Space]
+    public List<Player> playerList = new List<Player>();
+    [Space]
+    public GameObject rollDiceButton;
+    public Dice dice;
+    [HideInInspector]
+    public bool isPlayerHuman;
+
+    private int _activePlayer;
+
+    [SerializeField]
+    private float _waitBeforeRolling = 1.0f;
 
     private void Awake()
     {
@@ -92,6 +93,8 @@ public class GameManager : MonoBehaviour
     //this coroutine executes CPU player's turn
     private IEnumerator CPUTurn()
     {
+        isPlayerHuman = false;
+
         yield return new WaitForSeconds(_waitBeforeRolling);
 
         dice.StartCoroutine("RollDice");
@@ -113,8 +116,9 @@ public class GameManager : MonoBehaviour
     //this method is implemented on button click (human player only)
     public void HumanTurn()
     {
-        ActivateButton(false);
+        isPlayerHuman = true;
         dice.StartCoroutine("RollDice");
+        ActivateButton(false);
     }
 
     public void GameOver()

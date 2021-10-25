@@ -11,7 +11,7 @@ public class GameSettings : MonoBehaviour
     public Toggle blueCpu, blueHuman, blueNone;
     public Toggle yellowCpu, yellowHuman, yellowNone;
 
-    public void ReadToggle()
+    private void ReadToggle()
     {
         //green 
         if (greenCpu.isOn)

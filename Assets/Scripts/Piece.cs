@@ -14,7 +14,7 @@ public class Piece : MonoBehaviour
 
     public PieceColor pieceColor;
     public Color UIColor;
-    
+
     [SerializeField]
     private Route _route;
 
@@ -30,6 +30,7 @@ public class Piece : MonoBehaviour
     private int _doneSteps;
 
     private bool _isMoving;
+    private bool _buttonsActive;
 
     private void Start()
     {
@@ -49,9 +50,32 @@ public class Piece : MonoBehaviour
 
         _isMoving = true;
 
+        if (_buttonsActive)
+        {
+            while (!Interface.instance.fwdButtonPressed && !Interface.instance.backButtonPressed)
+                yield return null;
+        
+            Interface.instance.fwdButton.gameObject.SetActive(false);
+            Interface.instance.backButton.gameObject.SetActive(false);
+        }
+
         while (_stepsToMove > 0)
         {
-            _playerPosition++;
+            if (_buttonsActive)
+            {
+                if (Interface.instance.fwdButtonPressed)
+                    _playerPosition++;
+                else if (Interface.instance.backButtonPressed)
+                    _playerPosition--;
+            }    
+            else
+            {
+                if (_doneSteps + _stepsToMove < _route.nodeList.Count) 
+                    _playerPosition++;
+                else if (_doneSteps + _stepsToMove > _route.nodeList.Count) 
+                    _playerPosition--;
+            }
+
             Vector3 nextPosition = _route.nodeList[_playerPosition].transform.position;
             nextPosition.z = -0.05f; //offset - otherwise the player is hidden behind the node 
 
@@ -63,8 +87,10 @@ public class Piece : MonoBehaviour
             yield return new WaitForSeconds(_waitBetweenNodes);
 
             _stepsToMove--;
-            _doneSteps++;
+            //_doneSteps++;
         }
+
+        _doneSteps = _nodeList[_playerPosition].nodeID;
 
         //snake-ladder movement
         if (_nodeList[_playerPosition].connectedNode != null)
@@ -93,6 +119,11 @@ public class Piece : MonoBehaviour
         }
 
         GameManager.instance.state = GameManager.States.SwitchPlayer;
+
+        Interface.instance.fwdButtonPressed = false;
+        Interface.instance.backButtonPressed = false;
+
+        _buttonsActive = false;
         _isMoving = false;
     }
 
@@ -105,19 +136,24 @@ public class Piece : MonoBehaviour
     {
         _stepsToMove = diceNumber;
 
-        if (_doneSteps + _stepsToMove < _route.nodeList.Count)
-            StartCoroutine(Move());
-        else
-            StartCoroutine(TimerBeforeSwitch());
+        if (_doneSteps + _stepsToMove < _route.nodeList.Count && _doneSteps - _stepsToMove > 0 && GameManager.instance.isPlayerHuman)
+        {
+            Interface.instance.fwdButton.gameObject.SetActive(true);
+            Interface.instance.backButton.gameObject.SetActive(true);
+            _buttonsActive = true;
+        }
+
+        StartCoroutine(Move());
     }
 
-    private IEnumerator TimerBeforeSwitch()
-    {
-        Interface.instance.ShowText("Too high!");
-        Debug.Log("The rolled number is too high!");
+    //private IEnumerator TimerBeforeSwitch()
+    //{
+    //    Interface.instance.ShowText("Too high!");
+    //    Debug.Log("The rolled number is too high!");
 
-        yield return new WaitForSeconds(1.5f);
+    //    yield return new WaitForSeconds(1.5f);
 
-        GameManager.instance.state = GameManager.States.SwitchPlayer;
-    }
+    //    GameManager.instance.state = GameManager.States.SwitchPlayer;
+    //}
+
 }

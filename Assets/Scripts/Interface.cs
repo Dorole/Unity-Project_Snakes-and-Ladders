@@ -13,6 +13,13 @@ public class Interface : MonoBehaviour
     [Space]
     public GameObject winPanel;
     public Text winText;
+    [Space]
+    public Button fwdButton;
+    public Button backButton;
+    [HideInInspector]
+    public bool fwdButtonPressed;
+    [HideInInspector]
+    public bool backButtonPressed;
 
     private void Awake()
     {
@@ -23,6 +30,20 @@ public class Interface : MonoBehaviour
     private void Start()
     {
         winPanel.SetActive(false);
+        fwdButton.gameObject.SetActive(false);
+        backButton.gameObject.SetActive(false);
+    }
+
+    public void MoveForward()
+    {
+        fwdButtonPressed = true;
+        backButtonPressed = false;
+    }
+
+    public void MoveBack()
+    {
+        backButtonPressed = true;
+        fwdButtonPressed = false;
     }
 
     public void ShowText(string text)
