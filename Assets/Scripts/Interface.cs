@@ -10,16 +10,17 @@ public class Interface : MonoBehaviour
 
     public GameObject inGamePanel;
     public Text infoText;
+
     [Space]
     public GameObject winPanel;
     public Text winText;
+
     [Space]
     public Button fwdButton;
     public Button backButton;
-    [HideInInspector]
-    public bool fwdButtonPressed;
-    [HideInInspector]
-    public bool backButtonPressed;
+
+    [HideInInspector] public bool fwdButtonPressed;
+    [HideInInspector] public bool backButtonPressed;
 
     private void Awake()
     {

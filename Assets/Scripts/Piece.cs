@@ -15,16 +15,13 @@ public class Piece : MonoBehaviour
     public PieceColor pieceColor;
     public Color UIColor;
 
-    [SerializeField]
-    private Route _route;
+    [SerializeField] private Route _route;
 
     private List<Node> _nodeList = new List<Node>();
     private int _playerPosition;
 
-    [SerializeField]
-    private float _speed = 8.0f;
-    [SerializeField]
-    private float _waitBetweenNodes = 0.1f;
+    [SerializeField] private float _speed = 8.0f;
+    [SerializeField] private float _waitBetweenNodes = 0.1f;
 
     private int _stepsToMove;
     private int _doneSteps;

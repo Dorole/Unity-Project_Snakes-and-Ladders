@@ -7,9 +7,11 @@ public class Node : MonoBehaviour
 {
     public int nodeID; //node order number in the route
     public Node connectedNode; //the node where ladder/snake is leading to
-    
-    [SerializeField]
-    private Text _numberText;
+
+    public Image icon;
+    public Text conNodeText;
+
+    [SerializeField] private Text _numberText;
 
     public void SetNodeID(int nodeId)
     {

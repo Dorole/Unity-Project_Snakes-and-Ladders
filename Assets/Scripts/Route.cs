@@ -7,12 +7,17 @@ public class Route : MonoBehaviour
     private Transform[] _nodes;
     public List<Transform> nodeList = new List<Transform>();
 
-    void Start()
+    void Awake()
     {
-        FillNodes();
+        SetNodes();
     }
 
-    private void FillNodes()
+    private void OnValidate()
+    {
+        SetNodes();
+    }
+
+    private void SetNodes()
     {
         nodeList.Clear();
         _nodes = GetComponentsInChildren<Transform>();
@@ -36,7 +41,7 @@ public class Route : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        FillNodes();
+        SetNodes();
 
         for (int i = 0; i < nodeList.Count; i++)
         {

@@ -16,17 +16,15 @@ public class GameManager : MonoBehaviour
     [Space]
     public States state;
     [Space]
-    public List<Player> playerList = new List<Player>();
+    [SerializeField] private GameObject _rollDiceButton;
+    [SerializeField] private Dice _dice;
+    [SerializeField] private float _waitBeforeRolling = 1.0f;
     [Space]
-    public GameObject rollDiceButton;
-    public Dice dice;
-    [HideInInspector]
-    public bool isPlayerHuman;
+    public List<Player> playerList = new List<Player>();
+    [HideInInspector] public bool isPlayerHuman;
 
     private int _activePlayer;
 
-    [SerializeField]
-    private float _waitBeforeRolling = 1.0f;
 
     private void Awake()
     {
@@ -76,7 +74,7 @@ public class GameManager : MonoBehaviour
                 else
                 {
                     ActivateButton(true);
-                    rollDiceButton.GetComponent<Image>().color = playerList[_activePlayer].piece.UIColor; //matches player color and rollDiceButton color
+                    _rollDiceButton.GetComponent<Image>().color = playerList[_activePlayer].piece.UIColor; //matches player color and rollDiceButton color
                 }
                 state = States.Waiting;
                 break;
@@ -97,7 +95,7 @@ public class GameManager : MonoBehaviour
 
         yield return new WaitForSeconds(_waitBeforeRolling);
 
-        dice.StartCoroutine("RollDice");
+        _dice.StartCoroutine("RollDice");
     }
 
     //called from Dice class
@@ -110,14 +108,14 @@ public class GameManager : MonoBehaviour
 
     private void ActivateButton(bool active)
     {
-        rollDiceButton.SetActive(active);
+        _rollDiceButton.SetActive(active);
     }
 
     //this method is implemented on button click (human player only)
     public void HumanTurn()
     {
         isPlayerHuman = true;
-        dice.StartCoroutine("RollDice");
+        _dice.StartCoroutine("RollDice");
         ActivateButton(false);
     }
 
