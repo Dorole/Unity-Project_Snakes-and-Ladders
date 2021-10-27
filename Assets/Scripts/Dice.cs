@@ -6,12 +6,19 @@ public class Dice : MonoBehaviour
 {
     private Sprite[] _diceSides;
     private SpriteRenderer _spriteRenderer;
-    private int rolledNumber;
+    private int _rolledNumber;
+
+    [SerializeField] private Vector3 _offset;
 
     private void Start()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _diceSides = Resources.LoadAll<Sprite>("Dice/");
+
+        Vector3 desiredPosition = Camera.main.ScreenToWorldPoint(Interface.instance.rollButton.transform.position);
+        Vector3 newPosition = new Vector3(desiredPosition.x, desiredPosition.y + _offset.y, 0);
+
+        transform.position = newPosition;
     }
 
     public IEnumerator RollDice()
@@ -27,8 +34,8 @@ public class Dice : MonoBehaviour
             yield return new WaitForSeconds(0.05f);
         }
 
-        rolledNumber = randomDiceSide + 1;
+        _rolledNumber = randomDiceSide + 1;
 
-        GameManager.instance.MovePlayer(rolledNumber);
+        GameManager.instance.MovePlayer(_rolledNumber);
     }
 }

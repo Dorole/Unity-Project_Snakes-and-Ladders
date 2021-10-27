@@ -13,6 +13,9 @@ public class Interface : MonoBehaviour
     public Text infoText;
 
     [Space]
+    public Button rollButton;
+
+    [Space]
     public GameObject winPanel;
     public Text winText;
 
