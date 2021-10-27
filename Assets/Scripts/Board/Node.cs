@@ -21,6 +21,22 @@ public class Node : MonoBehaviour
             _numberText.text = nodeID.ToString();
     }
 
+    public void SetNodeIcon() 
+    {
+       
+       if (connectedNode != null)
+       {
+            conNodeText.text = connectedNode.nodeID.ToString();
+
+            if (nodeID < connectedNode.nodeID)
+                icon.color = Color.green;
+            else
+                icon.color = Color.red;
+
+            icon.gameObject.SetActive(true);
+       }
+    }
+
     private void OnDrawGizmos()
     {
         if (connectedNode != null)

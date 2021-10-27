@@ -29,6 +29,8 @@ public class Piece : MonoBehaviour
     private bool _isMoving;
     private bool _buttonsActive;
 
+    private bool _moveFwd;
+
     private void Start()
     {
         foreach (Transform node in _route.nodeList)
@@ -56,6 +58,11 @@ public class Piece : MonoBehaviour
             Interface.instance.backButton.gameObject.SetActive(false);
         }
 
+        if (_doneSteps + _stepsToMove < _route.nodeList.Count)
+            _moveFwd = true;
+        else if (_doneSteps + _stepsToMove > _route.nodeList.Count)
+            _moveFwd = false;
+
         while (_stepsToMove > 0)
         {
             if (_buttonsActive)
@@ -67,9 +74,9 @@ public class Piece : MonoBehaviour
             }    
             else
             {
-                if (_doneSteps + _stepsToMove < _route.nodeList.Count) 
+                if (_moveFwd) 
                     _playerPosition++;
-                else if (_doneSteps + _stepsToMove > _route.nodeList.Count) 
+                else 
                     _playerPosition--;
             }
 

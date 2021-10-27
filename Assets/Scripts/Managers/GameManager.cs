@@ -121,8 +121,7 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
-        Interface.instance.winPanel.SetActive(true);
-        Interface.instance.inGamePanel.SetActive(false);
+        Interface.instance.EndScreens();
 
         Interface.instance.winText.color = playerList[_activePlayer].piece.UIColor;
         Interface.instance.WinMessage(playerList[_activePlayer].playerName);

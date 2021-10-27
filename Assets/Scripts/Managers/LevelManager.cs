@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class LevelManager : MonoBehaviour
 {
+    public static LevelManager instance;
+
     [SerializeField] private int _minDistance, _maxDistance;
 
     private Route _route;
@@ -15,11 +17,15 @@ public class LevelManager : MonoBehaviour
     bool foundAvailableNode = true;
     bool foundAvailableConNode = true;
 
+    private void Awake()
+    {
+        instance = this;
+        _usedNodesId.Clear();
+    }
+
     private void Start()
     {
         _route = FindObjectOfType<Route>();
-
-        _usedNodesId.Clear();
 
         foreach (Transform node in _route.nodeList)
         {
@@ -31,18 +37,17 @@ public class LevelManager : MonoBehaviour
 
         GenerateLevel();
 
+        SetupNodeIcon();
     }
 
     private void GenerateLevel()
     {
-        int ladders = Random.Range(10, 16); //generate min 10 and max 15 ladders
+        int ladders = Random.Range(10, 16); //generate min 10, max 15 ladders
         int snakes = ladders;
-
-        Debug.Log(ladders + " , " + snakes);
 
         for (int i = 0; i < ladders; i++)
         {
-           FindLadderNode();
+            FindLadderNode();
         }
 
         for (int i = 0; i < snakes; i++)
@@ -60,7 +65,7 @@ public class LevelManager : MonoBehaviour
         {
             nodeId = Random.Range(1, 91);
 
-            if (MinimumNodesDistance(nodeId))
+            if (!_usedNodesId.Contains(nodeId))
                 foundAvailableNode = true;
         }
 
@@ -84,9 +89,6 @@ public class LevelManager : MonoBehaviour
 
         n.connectedNode = _nodeList[conNodeId];
 
-        n.icon.gameObject.SetActive(true);
-        n.icon.color = Color.green;
-        n.conNodeText.text = conNodeId.ToString();
     }
 
     private void FindSnakeNode()
@@ -98,7 +100,7 @@ public class LevelManager : MonoBehaviour
         {
             nodeId = Random.Range(11, 100);
 
-            if (MinimumNodesDistance(nodeId))
+            if (!_usedNodesId.Contains(nodeId))
                 foundAvailableNode = true;
         }
 
@@ -121,14 +123,29 @@ public class LevelManager : MonoBehaviour
         Node n = _nodeList[nodeId];
         n.connectedNode = _nodeList[conNodeId];
 
-        n.icon.gameObject.SetActive(true);
-        n.icon.color = Color.red;
-        n.conNodeText.text = conNodeId.ToString();
     }
 
     //minimum distance between two nodes containing a ladder/snake or being connected to nodes with a ladder/snake
     private bool MinimumNodesDistance (int nodeId)
     {
         return !_usedNodesId.Contains(nodeId) && !_usedNodesId.Contains(nodeId + 1) && !_usedNodesId.Contains(nodeId - 1);
+    }
+
+    private void SetupNodeIcon()
+    {       
+        foreach (Node node in _nodeList)
+        {
+            if (node.connectedNode != null)
+            {
+                node.conNodeText.text = node.connectedNode.nodeID.ToString();
+
+                if (node.nodeID < node.connectedNode.nodeID)
+                    node.icon.color = Color.green;
+                else 
+                    node.icon.color = Color.red;
+
+                node.icon.gameObject.SetActive(true);
+            }
+        }
     }
 }

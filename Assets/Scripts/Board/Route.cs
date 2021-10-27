@@ -7,7 +7,7 @@ public class Route : MonoBehaviour
     private Transform[] _nodes;
     public List<Transform> nodeList = new List<Transform>();
 
-    void Awake()
+    void Start()
     {
         SetNodes();
     }
@@ -35,6 +35,7 @@ public class Route : MonoBehaviour
                 node.gameObject.name = "Node " + num;
 
                 n.SetNodeID(num);
+                n.SetNodeIcon(); //delete if level is generated
             }
         }
     }

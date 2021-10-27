@@ -9,6 +9,7 @@ public class Interface : MonoBehaviour
     public static Interface instance;
 
     public GameObject inGamePanel;
+    public GameObject infoPanel;
     public Text infoText;
 
     [Space]
@@ -65,6 +66,13 @@ public class Interface : MonoBehaviour
     public void MenuButton()
     {
         SceneManager.LoadScene("Menu");
+    }
+
+    public void EndScreens()
+    {
+        winPanel.SetActive(true);
+        inGamePanel.SetActive(false);
+        infoPanel.SetActive(false);
     }
 
     public void QuitButton()
