@@ -35,7 +35,7 @@ public class Route : MonoBehaviour
                 node.gameObject.name = "Node " + num;
 
                 n.SetNodeID(num);
-                n.SetNodeIcon(); //delete if level is generated
+                //n.SetNodeIcon(); 
             }
         }
     }
