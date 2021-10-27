@@ -71,13 +71,6 @@ public class Interface : MonoBehaviour
         SceneManager.LoadScene("Menu");
     }
 
-    public void EndScreens()
-    {
-        winPanel.SetActive(true);
-        inGamePanel.SetActive(false);
-        infoPanel.SetActive(false);
-    }
-
     public void QuitButton()
     {
 #if UNITY_EDITOR
